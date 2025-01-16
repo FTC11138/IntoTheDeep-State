@@ -27,6 +27,9 @@ public class Configuration {
     public final String intake = "intake";
 
     public final String intakeSensor = "intakeSens";
+    public final String outtakeSensor = "outtakeSens";
+    public final String intakeEncoder = "intakeEnc";
+
 
     public final String specimenClaw = "sClaw";
 

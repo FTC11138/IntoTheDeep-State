@@ -155,7 +155,7 @@ public class TeleOp_Solo extends CommandOpMode {
         boolean start = g1.getButton(GamepadKeys.Button.START);
         boolean back = g1.getButton(GamepadKeys.Button.BACK);
 
-        boolean sampleIn = robot.intakeSubsystem.getDistance() < Constants.samplePickupTolerance;
+//        boolean sampleIn = robot.sensorSubsystem.getIntakeDistance() < Constants.samplePickupTolerance;
 
         scheduleCommand(lastPS, ps, new SpecLiftResetCommand());
 
@@ -230,11 +230,11 @@ public class TeleOp_Solo extends CommandOpMode {
         lastPS = ps;
         lastStart = start;
 
-        if (!lastSampleIn && sampleIn) {
-            gamepad1.rumble(500);
-        }
-
-        lastSampleIn = sampleIn;
+//        if (!lastSampleIn && sampleIn) {
+//            gamepad1.rumble(500);
+//        }
+//
+//        lastSampleIn = sampleIn;
 
         if (gamepad1.touchpad) {
             robot.follower.setPose(new Pose());

@@ -5,6 +5,7 @@ import com.pedropathing.util.CustomPIDFCoefficients;
 import com.pedropathing.util.PIDFController;
 
 import org.firstinspires.ftc.teamcode.hardware.Robot;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.SensorSubsystem;
 import org.firstinspires.ftc.teamcode.util.Constants;
 
 
@@ -19,12 +20,12 @@ public class SampleAlignCommand extends CommandBase {
     public void initialize() {
         anglePID = new PIDFController(new CustomPIDFCoefficients(Constants.kPAngle, Constants.kIAngle, Constants.kDAngle, Constants.kFAngle));
         robot.follower.startTeleopDrive();
-        robot.startCamera();
+        robot.sensorSubsystem.updateCameraState(SensorSubsystem.CameraState.ON);
     }
 
     @Override
     public void execute() {
-        angle = robot.sampleAlignmentProcessor.getAngleToRotate();
+        angle = robot.sensorSubsystem.getCameraAngleSample();
 
         robot.follower.update();
 
@@ -42,7 +43,7 @@ public class SampleAlignCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         robot.follower.setTeleOpMovementVectors(0, 0, 0, true);
-        robot.stopCamera();
+        robot.sensorSubsystem.updateCameraState(SensorSubsystem.CameraState.OFF);
     }
 
 }

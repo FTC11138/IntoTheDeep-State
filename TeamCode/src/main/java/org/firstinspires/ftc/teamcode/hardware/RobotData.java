@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.localization.Pose;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DepositSubsystem;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.IntakeSubsystem;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.SensorSubsystem;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.SpecimenSubsystem;
 import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.teamcode.util.Globals;
@@ -13,6 +15,14 @@ import org.firstinspires.ftc.teamcode.util.Globals;
 public class RobotData {
 
     public long loopTime = System.currentTimeMillis();
+
+    public double intakeDistance = 0;
+    public NormalizedRGBA intakeColorValues = new NormalizedRGBA();
+    public Globals.COLORS intakeColor = Globals.COLORS.NONE;
+    public double outtakeDistance = 0;
+    public double intakeSpeed = 0;
+    public SensorSubsystem.CameraState cameraState = SensorSubsystem.CameraState.OFF;
+    public double sampleAngle = 0;
 
     public int liftPosition1 = 0;
     public int liftPosition2 = 0;
@@ -25,8 +35,7 @@ public class RobotData {
     public double armPosition2 = 0;
     public IntakeSubsystem.ArmState armState = IntakeSubsystem.ArmState.NONE;
     public IntakeSubsystem.IntakeState intakeState = IntakeSubsystem.IntakeState.STOP;
-    public double intakeDistance = 0;
-    public Globals.COLORS intakeColor = Globals.COLORS.NONE;
+
 
     public int specimenLiftPosition = 0;
     public SpecimenSubsystem.SpecimenClawState specimenClawState = SpecimenSubsystem.SpecimenClawState.OPEN;
@@ -60,6 +69,19 @@ public class RobotData {
 
         telemetry.addLine();
 
+        telemetry.addData("Intake Distance", this.intakeDistance);
+        telemetry.addLine("Intake Color Values");
+        telemetry.addData("     Intake R", this.intakeColorValues.red);
+        telemetry.addData("     Intake G", this.intakeColorValues.green);
+        telemetry.addData("     Intake B", this.intakeColorValues.blue);
+        telemetry.addData("Intake Color", this.intakeColor);
+        telemetry.addData("Intake Speed", this.intakeSpeed);
+        telemetry.addData("Outtake Distance", this.outtakeDistance);
+        telemetry.addData("Camera State", this.cameraState);
+        telemetry.addData("Camera Sample Angle", this.sampleAngle);
+
+        telemetry.addLine();
+
         telemetry.addData("Lift Position 1", this.liftPosition1);
         telemetry.addData("Lift Position 2", this.liftPosition2);
         telemetry.addData("Wrist Position", this.bucketPosition);
@@ -73,8 +95,7 @@ public class RobotData {
         telemetry.addData("Arm Position 2", this.armPosition2);
         telemetry.addData("Arm State", this.armState);
         telemetry.addData("Intake State", this.intakeState);
-        telemetry.addData("Intake Distance", this.intakeDistance);
-        telemetry.addData("Intake Color", this.intakeColor);
+
 
         telemetry.addLine();
 

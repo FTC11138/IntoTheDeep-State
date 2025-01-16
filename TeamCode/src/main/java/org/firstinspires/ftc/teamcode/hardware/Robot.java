@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DepositSubsystem;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.IntakeSubsystem;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.SensorSubsystem;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.SpecimenSubsystem;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
@@ -42,6 +43,9 @@ public class Robot {
     public DepositSubsystem depositSubsystem;
     public IntakeSubsystem intakeSubsystem;
     public SpecimenSubsystem specimenSubsystem;
+
+    public SensorSubsystem sensorSubsystem;
+
     public ArrayList<RE_SubsystemBase> subsystems;
 
     public Configuration names = new Configuration();
@@ -66,6 +70,8 @@ public class Robot {
         this.depositSubsystem = new DepositSubsystem(hardwareMap, names.lift, names.lift2, names.bucket);
         this.intakeSubsystem = new IntakeSubsystem(hardwareMap, names.extension, names.arm1, names.arm2, names.intake, names.leds, names.intakeSensor);
         this.specimenSubsystem = new SpecimenSubsystem(hardwareMap, names.specimenClaw, names.specimenLift);
+
+//        this.sensorSubsystem = new SensorSubsystem(hardwareMap, names.intakeSensor, names.outtakeSensor, names.intakeEncoder, names.webcam);
 
 //        this.webcam = hardwareMap.get(WebcamName.class, names.webcam);
 //        setupCamera();

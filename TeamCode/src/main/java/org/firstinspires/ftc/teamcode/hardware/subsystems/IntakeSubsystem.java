@@ -75,8 +75,6 @@ public class IntakeSubsystem extends RE_SubsystemBase {
         Robot.getInstance().data.armPosition1 = arm1.getPosition();
         Robot.getInstance().data.armPosition2 = arm2.getPosition();
         Robot.getInstance().data.intakeState = intakeState;
-        Robot.getInstance().data.intakeDistance = getDistance();
-        Robot.getInstance().data.intakeColor = getColor();
     }
 
     public void setArmPosition(double pos) {

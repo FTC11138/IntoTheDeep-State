@@ -23,6 +23,7 @@ public class Constants {
     /* -------------------------------------------- AUTO CONSTANTS -------------------------------------------- */
 
     public static double samplePickupTolerance = 1.8;
+    public static double samplePickupTurnSpeedTolerance = 10;
 
     /* -------------------------------------------- DRIVE CONSTANTS -------------------------------------------- */
 
