@@ -22,19 +22,27 @@ public class IntakeSubsystem extends RE_SubsystemBase {
     private final RE_DcMotorEx extension;
     private final RE_DcMotorExParams extensionParams;
 
-    private final Servo arm1, arm2;
+    private final Servo arm1, arm2, intakePush;
     private final CRServoImplEx intake;
     private final RevColorSensorV3 colorSensor;
 
-    public final RevBlinkinLedDriver leds;
+    public RevBlinkinLedDriver leds;
 
     public IntakeState intakeState;
     public ArmState armState;
+    public IntakePushState intakePushState;
 
     public enum IntakeState {
         IN,
         STOP,
         OUT,
+    }
+
+    public enum IntakePushState {
+        PUSH,
+        UP,
+        STORE,
+        DRIVE
     }
 
     public enum ArmState {
@@ -45,7 +53,7 @@ public class IntakeSubsystem extends RE_SubsystemBase {
         NONE
     }
 
-    public IntakeSubsystem(HardwareMap hardwareMap, String ext, String arm1, String arm2, String intake, String leds, String colorSensor) {
+    public IntakeSubsystem(HardwareMap hardwareMap, String ext, String arm1, String arm2, String intake, String leds, String colorSensor, String intakePush) {
         extensionParams = new RE_DcMotorExParams(
                 Constants.extMin, Constants.extMax, Constants.extSlow,
                 1, 1, Constants.extUpRatio, Constants.extDownRatio, Constants.extSlowRatio
@@ -56,13 +64,16 @@ public class IntakeSubsystem extends RE_SubsystemBase {
         this.arm2 = hardwareMap.get(Servo.class, arm2);
         this.arm2.setDirection(Servo.Direction.REVERSE);
 
+        this.intakePush = hardwareMap.get(Servo.class, intakePush);
+
         this.intake = hardwareMap.get(CRServoImplEx.class, intake);
-        this.leds = hardwareMap.get(RevBlinkinLedDriver.class, leds);
+//        this.leds = hardwareMap.get(RevBlinkinLedDriver.class, leds);
 
         this.colorSensor = hardwareMap.get(RevColorSensorV3.class, colorSensor);
 
         intakeState = IntakeState.STOP;
         armState = ArmState.UP;
+        intakePushState = IntakePushState.STORE;
 
         Robot.getInstance().subsystems.add(this);
     }
@@ -86,6 +97,10 @@ public class IntakeSubsystem extends RE_SubsystemBase {
         this.armState = state;
     }
 
+    public void updateIntakePushState(IntakePushState state) {
+        this.intakePushState = state;
+    }
+
     private double getArmStatePosition(ArmState state) {
         switch (state) {
             case TRANSFER:
@@ -96,6 +111,21 @@ public class IntakeSubsystem extends RE_SubsystemBase {
                 return Constants.armUp;
             case FLAT:
                 return Constants.armFlat;
+            default:
+                return 0;
+        }
+    }
+
+    private double getIntakePushStatePosition(IntakePushState state) {
+        switch (state) {
+            case PUSH:
+                return Constants.intakePushDown;
+            case UP:
+                return Constants.intakePushUp;
+            case STORE:
+                return Constants.intakePushStore;
+            case DRIVE:
+                return Constants.intakePushDrive;
             default:
                 return 0;
         }
@@ -151,6 +181,8 @@ public class IntakeSubsystem extends RE_SubsystemBase {
 
         this.arm1.setPosition(getArmStatePosition(armState) - Constants.armServoOffset);
         this.arm2.setPosition(getArmStatePosition(armState));
+
+        this.intakePush.setPosition(getIntakePushStatePosition(intakePushState));
 
         switch (this.intakeState) {
             case IN:

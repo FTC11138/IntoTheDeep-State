@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.commands.subsystem.ArmStateCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystem.IntakePushStateCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystem.IntakeStateCommand;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.IntakeSubsystem;
@@ -19,6 +20,7 @@ public class SampleTransferCommand extends ConditionalCommand {
                         new ConditionalCommand(
                                 new SequentialCommandGroup(
                                         new ArmStateCommand(IntakeSubsystem.ArmState.TRANSFER),
+                                        new IntakePushStateCommand(IntakeSubsystem.IntakePushState.UP),
                                         new WaitCommand(200)
                                 ),
                                 new InstantCommand(),
@@ -28,6 +30,7 @@ public class SampleTransferCommand extends ConditionalCommand {
                         new IntakeStateCommand(IntakeSubsystem.IntakeState.OUT),
                         new WaitCommand(350),
                         new ArmStateCommand(IntakeSubsystem.ArmState.UP),
+                        new IntakePushStateCommand(IntakeSubsystem.IntakePushState.STORE),
                         new IntakeStateCommand(IntakeSubsystem.IntakeState.STOP)
                 ),
                 new InstantCommand(),

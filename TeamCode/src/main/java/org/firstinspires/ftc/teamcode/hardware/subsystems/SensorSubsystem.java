@@ -56,12 +56,12 @@ public class SensorSubsystem extends RE_SubsystemBase {
     public SensorSubsystem(HardwareMap hardwareMap, String intakeSensor, String outtakeSensor, String intakeEncoder, String intakeCamera) {
 
         this.intakeSensor = hardwareMap.get(RevColorSensorV3.class, intakeSensor);
-        this.outtakeSensor = hardwareMap.get(RevColorSensorV3.class, outtakeSensor);
+//        this.outtakeSensor = hardwareMap.get(RevColorSensorV3.class, outtakeSensor);
         this.intakeEncoder = hardwareMap.get(DcMotorEx.class, intakeEncoder);
-        this.intakeCamera = hardwareMap.get(WebcamName.class, intakeCamera);
+//        this.intakeCamera = hardwareMap.get(WebcamName.class, intakeCamera);
 
-        setupCamera();
-        stopCamera();
+//        setupCamera();
+//        stopCamera();
         cameraState = CameraState.OFF;
 
         Robot.getInstance().subsystems.add(this);
@@ -103,6 +103,7 @@ public class SensorSubsystem extends RE_SubsystemBase {
     public void updateData() {
 
         Robot.getInstance().data.intakeDistance = this.intakeDistance;
+        Robot.getInstance().data.intakeColorValues = this.colorValues;
         Robot.getInstance().data.intakeColor = this.color;
         Robot.getInstance().data.intakeSpeed = this.intakeSpeed;
         Robot.getInstance().data.outtakeDistance = this.outtakeDistance;
@@ -114,6 +115,9 @@ public class SensorSubsystem extends RE_SubsystemBase {
     @Override
     public void periodic() {
         intakeDistance = intakeSensor.getDistance(DistanceUnit.INCH);
+
+        intakeSensor.setGain(Constants.colorSensorGain);
+
         colorValues = intakeSensor.getNormalizedColors();
 
         double red = colorValues.red;
@@ -131,9 +135,9 @@ public class SensorSubsystem extends RE_SubsystemBase {
         }
 
 
-        intakeSpeed = intakeEncoder.getVelocity();
+        intakeSpeed = Math.abs(intakeEncoder.getVelocity());
 
-        outtakeDistance = outtakeSensor.getDistance(DistanceUnit.INCH);
+//        outtakeDistance = outtakeSensor.getDistance(DistanceUnit.INCH);
 
 
         if (cameraState == CameraState.ON) {

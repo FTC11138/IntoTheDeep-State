@@ -73,7 +73,7 @@ public class TeleOp_Solo extends CommandOpMode {
     boolean lastBack;
 
 
-    boolean lastSampleIn;
+    double lastIntakeSpeed;
 
 
     @Override
@@ -96,11 +96,11 @@ public class TeleOp_Solo extends CommandOpMode {
         switch (Globals.ALLIANCE) {
             case RED:
                 fieldCentricOffset = Math.toRadians(-90);
-                robot.intakeSubsystem.leds.setPattern(Constants.redPattern);
+//                robot.intakeSubsystem.leds.setPattern(Constants.redPattern);
                 break;
             case BLUE:
                 fieldCentricOffset = Math.toRadians(90);
-                robot.intakeSubsystem.leds.setPattern(Constants.bluePattern);
+//                robot.intakeSubsystem.leds.setPattern(Constants.bluePattern);
                 break;
         }
 
@@ -230,11 +230,21 @@ public class TeleOp_Solo extends CommandOpMode {
         lastPS = ps;
         lastStart = start;
 
-//        if (!lastSampleIn && sampleIn) {
-//            gamepad1.rumble(500);
-//        }
-//
-//        lastSampleIn = sampleIn;
+
+        double intakeSpeed = robot.sensorSubsystem.getIntakeSpeed();
+
+        if (robot.data.intaking && (lastIntakeSpeed > Constants.samplePickupTurnSpeedTolerance) && (intakeSpeed < Constants.samplePickupTurnSpeedTolerance)) {
+            gamepad1.rumble(500);
+            CommandScheduler.getInstance().schedule(
+                    new ConditionalCommand(
+                            new IntakePullBackCommand().andThen(new SampleTransferCommand()),
+                            new SampleTransferCommand(),
+                            () -> robot.data.intaking
+                    )
+            );
+        }
+
+        lastIntakeSpeed = intakeSpeed;
 
         if (gamepad1.touchpad) {
             robot.follower.setPose(new Pose());
@@ -246,7 +256,7 @@ public class TeleOp_Solo extends CommandOpMode {
         boolean rightTrigger = gamepad1.right_trigger > .5;
 
         if (leftTrigger && !lastLeftTrigger) {
-            CommandScheduler.getInstance().schedule(new IntakePushOutCommand(Constants.extIntake));
+            CommandScheduler.getInstance().schedule(new IntakePushOutCommand(Constants.extIntake, !Globals.IS_AUTO));
         }
 
         if (rightTrigger && !lastRightTrigger) {

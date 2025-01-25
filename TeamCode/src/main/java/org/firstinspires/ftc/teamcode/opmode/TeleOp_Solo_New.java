@@ -68,33 +68,6 @@ public class TeleOp_Solo_New extends CommandOpMode {
 
         robot.follower.startTeleopDrive();
 
-    }
-
-    @Override
-    public void run() {
-
-        if (teleOpEnabled) {
-
-            CommandScheduler.getInstance().run();
-
-            robot.periodic();
-            robot.updateData();
-            robot.write();
-
-            robot.follower.setTeleOpMovementVectors(
-                    -gamepad1.left_stick_y * (data.scoring || data.intaking ? 0.5 : 1),
-                    -gamepad1.left_stick_x * (data.scoring || data.intaking ? 0.5 : 1),
-                    -gamepad1.right_stick_x * (data.scoring || data.intaking ? 0.5 : 1),
-                    Constants.robotCentric
-            );
-
-        }
-
-        if (robot.data.intaking) {
-            robot.intakeSubsystem.setExtensionPower(-gamepad1.right_stick_y);
-        }
-
-
         g1.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(new SequentialCommandGroup(
                         new DropSampleCommand(),
@@ -164,6 +137,35 @@ public class TeleOp_Solo_New extends CommandOpMode {
                     teleOpEnabled = true;
                     gamepad1.rumble(2000);
                 });
+
+    }
+
+    @Override
+    public void run() {
+
+        if (teleOpEnabled) {
+
+            CommandScheduler.getInstance().run();
+
+            robot.periodic();
+            robot.updateData();
+            robot.write();
+
+            robot.follower.setTeleOpMovementVectors(
+                    -gamepad1.left_stick_y * (data.scoring || data.intaking ? 0.5 : 1),
+                    -gamepad1.left_stick_x * (data.scoring || data.intaking ? 0.5 : 1),
+                    -gamepad1.right_stick_x * (data.scoring || data.intaking ? 0.5 : 1),
+                    Constants.robotCentric
+            );
+
+        }
+
+        if (robot.data.intaking) {
+            robot.intakeSubsystem.setExtensionPower(-gamepad1.right_stick_y);
+        }
+
+
+
 
 
 

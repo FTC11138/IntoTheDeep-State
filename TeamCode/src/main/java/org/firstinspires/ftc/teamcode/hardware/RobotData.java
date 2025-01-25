@@ -34,6 +34,7 @@ public class RobotData {
     public double armPosition1 = 0;
     public double armPosition2 = 0;
     public IntakeSubsystem.ArmState armState = IntakeSubsystem.ArmState.NONE;
+    public IntakeSubsystem.IntakePushState intakePushState = IntakeSubsystem.IntakePushState.STORE;
     public IntakeSubsystem.IntakeState intakeState = IntakeSubsystem.IntakeState.STOP;
 
 
@@ -94,6 +95,7 @@ public class RobotData {
         telemetry.addData("Arm Position 1", this.armPosition1);
         telemetry.addData("Arm Position 2", this.armPosition2);
         telemetry.addData("Arm State", this.armState);
+        telemetry.addData("Intake Push State", this.intakePushState);
         telemetry.addData("Intake State", this.intakeState);
 
 

@@ -23,7 +23,7 @@ public class Constants {
     /* -------------------------------------------- AUTO CONSTANTS -------------------------------------------- */
 
     public static double samplePickupTolerance = 1.8;
-    public static double samplePickupTurnSpeedTolerance = 10;
+    public static double samplePickupTurnSpeedTolerance = 15000;
 
     /* -------------------------------------------- DRIVE CONSTANTS -------------------------------------------- */
 
@@ -47,6 +47,11 @@ public class Constants {
     public static double armUp = 0.7;
     public static double armServoOffset = 0;
 
+    public static double intakePushDown = 0.57;
+    public static double intakePushUp = 0.9;
+    public static double intakePushStore = 0.7;
+    public static double intakePushDrive = 0.35;
+
     public static double specimenClawOpen = 0.06;
     public static double specimenClawClose = 0.6;
 
@@ -67,7 +72,7 @@ public class Constants {
 
     // Extension
     public static int extMin = 0;
-    public static int extIntake = 750;
+    public static int extIntake = 400;
     public static int extMax = 1500;
     public static int extSlow = 50;
 

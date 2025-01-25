@@ -23,7 +23,7 @@ public class SampleAlignmentOpMode extends OpMode {
         robot.follower.setPose(new Pose(0, 0, 0));
         anglePID = new PIDFController(new CustomPIDFCoefficients(Constants.kPAngle, Constants.kIAngle, Constants.kDAngle, Constants.kFAngle));
         robot.follower.startTeleopDrive();
-        robot.startCamera();
+//        robot.startCamera();
     }
 
     @Override
