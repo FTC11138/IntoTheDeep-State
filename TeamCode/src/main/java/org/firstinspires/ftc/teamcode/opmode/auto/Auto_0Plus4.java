@@ -195,15 +195,6 @@ public class Auto_0Plus4 extends LinearOpMode {
         robot.initialize(hardwareMap, telemetry);
         CommandScheduler.getInstance().reset();
 
-        switch (Globals.ALLIANCE) {
-            case RED:
-                robot.intakeSubsystem.leds.setPattern(Constants.redPattern);
-                break;
-            case BLUE:
-                robot.intakeSubsystem.leds.setPattern(Constants.bluePattern);
-                break;
-        }
-
         buildPaths();
 
         while (!isStarted()) {

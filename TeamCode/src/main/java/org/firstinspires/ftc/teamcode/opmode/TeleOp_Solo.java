@@ -74,6 +74,7 @@ public class TeleOp_Solo extends CommandOpMode {
 
 
     double lastIntakeSpeed;
+    double lastIntakeDistance;
 
 
     @Override
@@ -92,17 +93,6 @@ public class TeleOp_Solo extends CommandOpMode {
         data.stopIntaking();
         data.stopScoring();
         data.setSampleUnloaded();
-
-        switch (Globals.ALLIANCE) {
-            case RED:
-                fieldCentricOffset = Math.toRadians(-90);
-//                robot.intakeSubsystem.leds.setPattern(Constants.redPattern);
-                break;
-            case BLUE:
-                fieldCentricOffset = Math.toRadians(90);
-//                robot.intakeSubsystem.leds.setPattern(Constants.bluePattern);
-                break;
-        }
 
         robot.follower.startTeleopDrive();
 
@@ -232,8 +222,17 @@ public class TeleOp_Solo extends CommandOpMode {
 
 
         double intakeSpeed = robot.sensorSubsystem.getIntakeSpeed();
+        double intakeDistance = robot.sensorSubsystem.getIntakeDistance();
+        boolean leftTrigger = gamepad1.left_trigger > .5;
+        boolean rightTrigger = gamepad1.right_trigger > .5;
 
-        if (robot.data.intaking && (lastIntakeSpeed > Constants.samplePickupTurnSpeedTolerance) && (intakeSpeed < Constants.samplePickupTurnSpeedTolerance)) {
+        if (rightTrigger && !lastRightTrigger ||
+                (
+                        robot.data.intaking
+                        && (lastIntakeSpeed > Constants.samplePickupTurnSpeedTolerance)
+                        && (intakeSpeed < Constants.samplePickupTurnSpeedTolerance)
+                        && (intakeDistance < Constants.samplePickupTolerance)
+                )) {
             gamepad1.rumble(500);
             CommandScheduler.getInstance().schedule(
                     new ConditionalCommand(
@@ -244,34 +243,20 @@ public class TeleOp_Solo extends CommandOpMode {
             );
         }
 
+        if (leftTrigger && !lastLeftTrigger) {
+            CommandScheduler.getInstance().schedule(new IntakePushOutCommand(Constants.extIntake, !Globals.IS_AUTO));
+        }
+
+        lastLeftTrigger = leftTrigger;
+        lastRightTrigger = rightTrigger;
         lastIntakeSpeed = intakeSpeed;
+        lastIntakeDistance = intakeDistance;
 
         if (gamepad1.touchpad) {
             robot.follower.setPose(new Pose());
             gamepad1.rumble(500);
             gamepad1.setLedColor(0, 1, 0, 1000);
         }
-
-        boolean leftTrigger = gamepad1.left_trigger > .5;
-        boolean rightTrigger = gamepad1.right_trigger > .5;
-
-        if (leftTrigger && !lastLeftTrigger) {
-            CommandScheduler.getInstance().schedule(new IntakePushOutCommand(Constants.extIntake, !Globals.IS_AUTO));
-        }
-
-        if (rightTrigger && !lastRightTrigger) {
-            CommandScheduler.getInstance().schedule(
-                    new ConditionalCommand(
-                            new IntakePullBackCommand().andThen(new SampleTransferCommand()),
-                            new SampleTransferCommand(),
-                            () -> robot.data.intaking
-                    )
-            );
-        }
-
-        lastLeftTrigger = leftTrigger;
-        lastRightTrigger = rightTrigger;
-
 
 
     }

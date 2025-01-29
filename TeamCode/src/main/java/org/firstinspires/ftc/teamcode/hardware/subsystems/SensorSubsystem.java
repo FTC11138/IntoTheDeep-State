@@ -37,7 +37,7 @@ public class SensorSubsystem extends RE_SubsystemBase {
 
 
     private double intakeDistance;
-    private NormalizedRGBA colorValues;
+    private NormalizedRGBA colorValues = new NormalizedRGBA();
     private Globals.COLORS color;
 
     private double intakeSpeed;
@@ -58,11 +58,15 @@ public class SensorSubsystem extends RE_SubsystemBase {
         this.intakeSensor = hardwareMap.get(RevColorSensorV3.class, intakeSensor);
 //        this.outtakeSensor = hardwareMap.get(RevColorSensorV3.class, outtakeSensor);
         this.intakeEncoder = hardwareMap.get(DcMotorEx.class, intakeEncoder);
-//        this.intakeCamera = hardwareMap.get(WebcamName.class, intakeCamera);
+        this.intakeCamera = hardwareMap.get(WebcamName.class, intakeCamera);
 
-//        setupCamera();
-//        stopCamera();
         cameraState = CameraState.OFF;
+        if (Globals.IS_AUTO) {
+            setupCamera();
+            cameraState = CameraState.ON;
+        }
+//        stopCamera();
+
 
         Robot.getInstance().subsystems.add(this);
     }
@@ -172,7 +176,6 @@ public class SensorSubsystem extends RE_SubsystemBase {
     }
 
     private void stopCamera() {
-        cameraState = CameraState.OFF;
         visionPortal.stopStreaming();
     }
 

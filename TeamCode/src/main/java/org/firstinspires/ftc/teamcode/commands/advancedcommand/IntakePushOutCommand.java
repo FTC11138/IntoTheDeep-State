@@ -15,16 +15,16 @@ import org.firstinspires.ftc.teamcode.hardware.subsystems.IntakeSubsystem;
 public class IntakePushOutCommand extends SequentialCommandGroup {
     public IntakePushOutCommand(int ext) {
         super(
-                new InstantCommand(Robot.getInstance().data::startIntaking),
                 new ExtensionPositionCommand(ext),
                 new ArmStateCommand(IntakeSubsystem.ArmState.INTAKE),
-                new IntakeStateCommand(IntakeSubsystem.IntakeState.IN)
+                new IntakeStateCommand(IntakeSubsystem.IntakeState.IN),
+                new WaitCommand(500),
+                new InstantCommand(Robot.getInstance().data::startIntaking)
         );
     }
 
     public IntakePushOutCommand(int ext, boolean intake) {
         super(
-                new InstantCommand(Robot.getInstance().data::startIntaking),
                 new ConditionalCommand(
                         new SequentialCommandGroup(
                                 new IntakePushStateCommand(IntakeSubsystem.IntakePushState.DRIVE),
@@ -36,7 +36,13 @@ public class IntakePushOutCommand extends SequentialCommandGroup {
                         () -> intake
                 ),
                 new ExtensionPositionCommand(ext),
-                new ArmStateCommand(IntakeSubsystem.ArmState.INTAKE)
+                new ArmStateCommand(IntakeSubsystem.ArmState.INTAKE),
+                new ConditionalCommand(
+                        new WaitCommand(500),
+                        new InstantCommand(),
+                        () -> intake
+                ),
+                new InstantCommand(Robot.getInstance().data::startIntaking)
 
         );
     }

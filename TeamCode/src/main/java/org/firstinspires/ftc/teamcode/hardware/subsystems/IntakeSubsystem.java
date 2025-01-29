@@ -179,7 +179,12 @@ public class IntakeSubsystem extends RE_SubsystemBase {
 
         this.extension.periodic();
 
-        this.arm1.setPosition(getArmStatePosition(armState) - Constants.armServoOffset);
+
+        if (armState == ArmState.TRANSFER) {
+            this.arm1.setPosition(getArmStatePosition(armState) - Constants.armServoOffsetTransfer);
+        } else {
+            this.arm1.setPosition(getArmStatePosition(armState) - Constants.armServoOffset);
+        }
         this.arm2.setPosition(getArmStatePosition(armState));
 
         this.intakePush.setPosition(getIntakePushStatePosition(intakePushState));

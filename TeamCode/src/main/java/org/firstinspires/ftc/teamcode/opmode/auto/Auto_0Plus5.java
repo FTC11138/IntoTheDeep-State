@@ -6,6 +6,8 @@ import static org.firstinspires.ftc.teamcode.opmode.auto.AutonomousMethods.build
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.ConditionalCommand;
+import com.arcrobotics.ftclib.command.ParallelDeadlineGroup;
+import com.arcrobotics.ftclib.command.ParallelRaceGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.pedropathing.follower.FollowerConstants;
@@ -17,6 +19,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.commands.advancedcommand.IntakePullBackCommand;
+import org.firstinspires.ftc.teamcode.commands.advancedcommand.IntakePushOutCommand;
 import org.firstinspires.ftc.teamcode.commands.advancedcommand.SpecimenDepositCommand;
 import org.firstinspires.ftc.teamcode.commands.advancedcommand.SpecimenGrabCommand;
 import org.firstinspires.ftc.teamcode.commands.drivecommand.PathCommand;
@@ -71,15 +74,15 @@ public class Auto_0Plus5 extends LinearOpMode {
 
 
 
-    public static double dragStart1X = 36.4;
+    public static double dragStart1X = 30;
     public static double dragStart1Y = 41.7;
-    public static double dragStart1Degrees = -45;
-    public static int dragStart1Ext = 570;
+    public static double dragStart1Degrees = -25;
+    public static int dragStart1Ext = 1000;
 
-    public static double dragStart2X = 39;
-    public static double dragStart2Y = 31.7;
-    public static double dragStart2Degrees = -55;
-    public static int dragStart2Ext = 390;
+    public static double dragStart2X = 30;
+    public static double dragStart2Y = 34;
+    public static double dragStart2Degrees = -35;
+    public static int dragStart2Ext = 950;
 
     public static double dragStart3X = 41.5;
     public static double dragStart3Y = 21.7;
@@ -87,13 +90,13 @@ public class Auto_0Plus5 extends LinearOpMode {
     public static int dragStart3Ext = 200;
 
 
-    public static double dragEnd1X = 17.7;
+    public static double dragEnd1X = 23;
     public static double dragEnd1Y = 41.7;
-    public static double dragEnd1Degrees = -90;
+    public static double dragEnd1Degrees = -100;
 
-    public static double dragEnd2X = 17.7;
-    public static double dragEnd2Y = 31.7;
-    public static double dragEnd2Degrees = -90;
+    public static double dragEnd2X = 23;
+    public static double dragEnd2Y = 34;
+    public static double dragEnd2Degrees = -100;
 
     public static double dragEnd3X = 17.7;
     public static double dragEnd3Y = 21.7;
@@ -244,17 +247,6 @@ public class Auto_0Plus5 extends LinearOpMode {
         robot.initialize(hardwareMap, telemetry);
         CommandScheduler.getInstance().reset();
 
-
-
-        switch (Globals.ALLIANCE) {
-            case RED:
-                robot.intakeSubsystem.leds.setPattern(Constants.redPattern);
-                break;
-            case BLUE:
-                robot.intakeSubsystem.leds.setPattern(Constants.bluePattern);
-                break;
-        }
-
         buildPaths();
 
         CommandScheduler.getInstance().schedule(new SpecimenClawStateCommand(SpecimenSubsystem.SpecimenClawState.CLOSED));
@@ -280,13 +272,10 @@ public class Auto_0Plus5 extends LinearOpMode {
                         new PathCommand(preload),
                         new SpecimenDepositCommand(),
 
-
-
                         new PathCommand(toDragPath)
                                 .alongWith(new SequentialCommandGroup(
                                         new WaitCommand(1700),
-                                        new ExtensionPositionCommand(dragStart1Ext),
-                                        new ArmStateCommand(IntakeSubsystem.ArmState.INTAKE),
+                                        new IntakePushOutCommand(dragStart1Ext, false),
                                         new SpecimenLiftStateCommand(SpecimenSubsystem.SpecimenLiftState.GRAB)
                                 )),
 

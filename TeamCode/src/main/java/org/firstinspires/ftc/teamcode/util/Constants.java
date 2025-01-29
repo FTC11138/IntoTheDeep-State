@@ -23,7 +23,7 @@ public class Constants {
     /* -------------------------------------------- AUTO CONSTANTS -------------------------------------------- */
 
     public static double samplePickupTolerance = 1.8;
-    public static double samplePickupTurnSpeedTolerance = 15000;
+    public static double samplePickupTurnSpeedTolerance = 5000;
 
     /* -------------------------------------------- DRIVE CONSTANTS -------------------------------------------- */
 
@@ -37,20 +37,21 @@ public class Constants {
 
     /* -------------------------------------------- SERVO CONSTANTS -------------------------------------------- */
 
-    public static double bucketDrop = 0.2;
-    public static double bucketIntake = 0.63;
+    public static double bucketDrop = 0.25;
+    public static double bucketIntake = 0.7;
     public static double bucketAscent = 0;
 
-    public static double armTransfer = 0.82;
-    public static double armIntake = 0.31;
-    public static double armFlat = 0.37;
-    public static double armUp = 0.7;
-    public static double armServoOffset = 0;
+    public static double armTransfer = 0.92;
+    public static double armIntake = 0.445;
+    public static double armFlat = 0.52;
+    public static double armUp = 0.85;
+    public static double armServoOffset = -0.02;
+    public static double armServoOffsetTransfer = -0.02;
 
-    public static double intakePushDown = 0.57;
-    public static double intakePushUp = 0.9;
-    public static double intakePushStore = 0.7;
-    public static double intakePushDrive = 0.35;
+    public static double intakePushDown = 0.35;
+    public static double intakePushUp = 0.7;
+    public static double intakePushStore = 0.57;
+    public static double intakePushDrive = 0.1;
 
     public static double specimenClawOpen = 0.06;
     public static double specimenClawClose = 0.6;
@@ -105,7 +106,7 @@ public class Constants {
 
     /* -------------------------------------------- VISION RECTANGLE CONSTANTS -------------------------------------------- */
 
-    public static double kPAngle = 0;
+    public static double kPAngle = -0.012;
     public static double kIAngle = 0;
     public static double kDAngle = 0;
     public static double kFAngle = 0;
